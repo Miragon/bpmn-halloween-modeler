@@ -16,6 +16,10 @@
       background-size: 400% 400%;
     }
 
+    svg.new-parent {
+      background: linear-gradient(135deg, #1a0033, #2d1b3d, #1a0033) !important;
+    }
+
     @keyframes spookyGradient {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -136,28 +140,30 @@
 
     /* Halloween colors for BPMN elements - comprehensive approach using shape classes */
     
-    /* Start Events - all circles in start event shapes */
+    /* Start Events - pumpkin style with gradient */
     .djs-element[data-type="bpmn:StartEvent"] .djs-visual > circle,
     .djs-element.bpmn-start-event .djs-visual > circle,
     .djs-element .djs-visual > circle[data-semantic="bpmn:StartEvent"],
     .djs-element[data-element-id*="StartEvent"] .djs-visual > circle,
     .djs-element[data-element-id*="startEvent"] .djs-visual > circle,
     .djs-element[data-element-id^="StartEvent"] .djs-visual > circle {
-      fill: #ff6b35 !important;
-      stroke: #ff4500 !important;
-      stroke-width: 3px !important;
+      fill: url(#pumpkinGradient) !important;
+      stroke: #8b4513 !important;
+      stroke-width: 4px !important;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
     }
 
-    /* End Events - all circles in end event shapes */
+    /* End Events - darker pumpkin for end */
     .djs-element[data-type="bpmn:EndEvent"] .djs-visual > circle,
     .djs-element.bpmn-end-event .djs-visual > circle,
     .djs-element .djs-visual > circle[data-semantic="bpmn:EndEvent"],
     .djs-element[data-element-id*="EndEvent"] .djs-visual > circle,
     .djs-element[data-element-id*="endEvent"] .djs-visual > circle,
     .djs-element[data-element-id^="EndEvent"] .djs-visual > circle {
-      fill: #8b0000 !important;
-      stroke: #ff0000 !important;
-      stroke-width: 3px !important;
+      fill: url(#darkPumpkinGradient) !important;
+      stroke: #8b0000 !important;
+      stroke-width: 4px !important;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.7)) !important;
     }
 
     /* Tasks - all rectangles in task shapes */
@@ -189,10 +195,11 @@
     }
 
     /* Broad fallback - any circles that aren't styled yet */
-    .djs-element .djs-visual > circle:not([fill="#ff6b35"]):not([fill="#8b0000"]) {
-      fill: #ff6b35 !important;
-      stroke: #ff4500 !important;
-      stroke-width: 3px !important;
+    .djs-element .djs-visual > circle:not([fill*="pumpkin"]) {
+      fill: url(#pumpkinGradient) !important;
+      stroke: #8b4513 !important;
+      stroke-width: 4px !important;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
     }
 
     /* Broad fallback - any rectangles that aren't styled yet */
@@ -223,9 +230,10 @@
 
     /* Fix drag preview and overlays */
     .djs-drag-group .djs-visual > circle {
-      fill: #ff6b35 !important;
-      stroke: #ff4500 !important;
-      stroke-width: 3px !important;
+      fill: url(#pumpkinGradient) !important;
+      stroke: #8b4513 !important;
+      stroke-width: 4px !important;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
     }
 
     .djs-drag-group .djs-visual > rect {
@@ -243,9 +251,10 @@
     /* Style drag preview elements */
     .djs-drag-preview .djs-visual > circle,
     .djs-preview .djs-visual > circle {
-      fill: #ff6b35 !important;
-      stroke: #ff4500 !important;
-      stroke-width: 3px !important;
+      fill: url(#pumpkinGradient) !important;
+      stroke: #8b4513 !important;
+      stroke-width: 4px !important;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
     }
 
     .djs-drag-preview .djs-visual > rect,
@@ -264,8 +273,9 @@
 
     /* Style temporary and overlay elements */
     .djs-overlay .djs-visual > circle {
-      fill: #ff6b35 !important;
-      stroke: #ff4500 !important;
+      fill: url(#pumpkinGradient) !important;
+      stroke: #8b4513 !important;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5)) !important;
     }
 
     .djs-overlay .djs-visual > rect {
@@ -296,7 +306,23 @@
     </div>
   </div>
 
-  <div id="canvas"></div>
+  <div id="canvas">
+    <!-- SVG definitions for pumpkin gradients -->
+    <svg width="0" height="0" style="position: absolute;">
+      <defs>
+        <radialGradient id="pumpkinGradient" cx="50%" cy="30%" r="70%">
+          <stop offset="0%" style="stop-color:#ffb347;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#ff6b35;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#ff4500;stop-opacity:1" />
+        </radialGradient>
+        <radialGradient id="darkPumpkinGradient" cx="50%" cy="30%" r="70%">
+          <stop offset="0%" style="stop-color:#cc5500;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#8b0000;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#4b0000;stop-opacity:1" />
+        </radialGradient>
+      </defs>
+    </svg>
+  </div>
 
   <!-- modeler distro -->
   <script src="https://unpkg.com/bpmn-js@17.7.1/dist/bpmn-modeler.development.js"></script>
