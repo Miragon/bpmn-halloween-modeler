@@ -1,0 +1,20 @@
+{
+  "name": "halloween-bpmn-modeler",
+  "version": "1.0.0",
+  "description": "A Halloween-themed BPMN modeler using bpmn.io",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8080 -o",
+    "dev": "npx http-server -p 8080 -o"
+  },
+  "dependencies": {
+    "bpmn-js": "^17.0.0",
+    "bpmn-js-token-simulation": "^0.33.1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "keywords": ["bpmn", "modeler", "halloween", "workflow"],
+  "author": "",
+  "license": "MIT"
+}

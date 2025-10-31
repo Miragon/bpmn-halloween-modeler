@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Halloween BPMN Modeler</title>
+
+  <!-- required modeler styles -->
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.7.1/dist/assets/diagram-js.css">
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.7.1/dist/assets/bpmn-js.css">
+  <link rel="stylesheet" href="https://unpkg.com/bpmn-js@17.7.1/dist/assets/bpmn-font/css/bpmn-embedded.css">
+
+  <style>
+    html, body, #canvas {
+      height: 100%; margin: 0; padding: 0;
+      font-family: 'Griffy', cursive;
+      background: linear-gradient(135deg, #1a0033, #2d1b3d, #1a0033);
+      background-size: 400% 400%;
+    }
+
+    @keyframes spookyGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .header {
+      background: linear-gradient(90deg, #2d1b3d, #4b0082, #2d1b3d);
+      padding: 15px 20px;
+      border-bottom: 3px solid #ff6b35;
+      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-family: 'Creepster', cursive;
+      color: #ff6b35;
+      font-size: 2.2rem;
+      text-shadow: 2px 2px 0px #8b0000, 4px 4px 8px rgba(0,0,0,0.8);
+      animation: spookyPulse 2s ease-in-out infinite;
+      margin: 0;
+    }
+
+    @keyframes spookyPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+    }
+
+    .halloween-btn {
+      background: linear-gradient(45deg, #ff6b35, #ff4500);
+      border: 2px solid #8b0000;
+      color: #1a0033;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-family: 'Griffy', cursive;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+    }
+
+    .halloween-btn:hover {
+      background: linear-gradient(45deg, #ff4500, #ff6b35);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+    }
+
+    #canvas {
+      height: calc(100vh - 80px);
+    }
+
+    /* Halloween themed BPMN styles - better visibility */
+    .djs-palette {
+      background: rgba(45, 27, 61, 0.95) !important;
+      border: 2px solid #ff6b35 !important;
+      width: 54px;
+      border-radius: 8px !important;
+    }
+
+    .djs-palette .entry {
+      background: #ff6b35 !important;
+      border-radius: 4px !important;
+      margin: 2px !important;
+      display: inline-block !important;
+    }
+
+    .djs-palette .entry:hover {
+      background: #ff4500 !important;
+      transform: scale(1.1) !important;
+    }
+
+    .djs-palette .entry svg,
+    .djs-palette .entry path,
+    .djs-palette .entry * {
+      fill: white !important;
+      stroke: white !important;
+      color: white !important;
+    }
+
+    .djs-context-pad {
+      background: rgba(45, 27, 61, 0.95) !important;
+      border: 2px solid #ff6b35 !important;
+      border-radius: 8px !important;
+      padding: 3px !important;
+    }
+
+    .djs-context-pad .entry {
+      background: #ff6b35 !important;
+      border-radius: 50% !important;
+      margin: 1px !important;
+      padding: 2px !important;
+      min-height: 16px !important;
+      min-width: 16px !important;
+    }
+
+    .djs-context-pad .entry:hover {
+      background: #ff4500 !important;
+      transform: scale(1.15) !important;
+    }
+
+    .djs-context-pad .entry svg,
+    .djs-context-pad .entry path,
+    .djs-context-pad .entry * {
+      fill: white !important;
+      stroke: white !important;
+      color: white !important;
+    }
+
+    /* Halloween colors for BPMN elements - comprehensive CSS-only approach */
+    
+    /* Start Events */
+    .djs-element[data-element-id*="StartEvent"] .djs-visual > circle,
+    .djs-element[data-element-id*="startEvent"] .djs-visual > circle,
+    .djs-element[data-element-id^="StartEvent"] .djs-visual > circle {
+      fill: #ff6b35 !important;
+      stroke: #ff4500 !important;
+      stroke-width: 2px !important;
+    }
+
+    /* End Events */
+    .djs-element[data-element-id*="EndEvent"] .djs-visual > circle,
+    .djs-element[data-element-id*="endEvent"] .djs-visual > circle,
+    .djs-element[data-element-id^="EndEvent"] .djs-visual > circle {
+      fill: #8b0000 !important;
+      stroke: #ff0000 !important;
+      stroke-width: 2px !important;
+    }
+
+    /* Tasks */
+    .djs-element[data-element-id*="Task"] .djs-visual > rect,
+    .djs-element[data-element-id*="task"] .djs-visual > rect,
+    .djs-element[data-element-id*="Activity"] .djs-visual > rect,
+    .djs-element[data-element-id*="activity"] .djs-visual > rect,
+    .djs-element[data-element-id^="Task"] .djs-visual > rect,
+    .djs-element[data-element-id^="Activity"] .djs-visual > rect {
+      fill: #4b0082 !important;
+      stroke: #9400d3 !important;
+      stroke-width: 2px !important;
+    }
+
+    /* Gateways */
+    .djs-element[data-element-id*="Gateway"] .djs-visual > polygon,
+    .djs-element[data-element-id*="gateway"] .djs-visual > polygon,
+    .djs-element[data-element-id^="Gateway"] .djs-visual > polygon {
+      fill: #2f4f2f !important;
+      stroke: #228b22 !important;
+      stroke-width: 2px !important;
+    }
+
+    /* Generic fallback for any BPMN shape that doesn't match above */
+    .djs-element .djs-visual > rect:not([fill="#ffffff"]) {
+      fill: #4b0082 !important;
+      stroke: #9400d3 !important;
+    }
+
+    /* Make text visible */
+    .djs-element text {
+      fill: white !important;
+      font-weight: bold !important;
+    }
+
+    /* Style sequence flows */
+    .djs-connection .djs-visual > path {
+      stroke: #ff6b35 !important;
+      stroke-width: 2px !important;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Griffy:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="header">
+    <h1>🎃 Halloween BPMN Modeler 🦇</h1>
+    <div class="controls">
+      <button class="halloween-btn" onclick="saveDiagram()">💀 Save</button>
+      <button class="halloween-btn" onclick="loadDiagram()">👻 Load</button>
+    </div>
+  </div>
+
+  <div id="canvas"></div>
+
+  <!-- modeler distro -->
+  <script src="https://unpkg.com/bpmn-js@17.7.1/dist/bpmn-modeler.development.js"></script>
+
+  <script>
+    // modeler instance
+    var bpmnModeler = new BpmnJS({
+      container: '#canvas'
+    });
+
+    /**
+     * Save diagram contents and print them to the console.
+     */
+    async function saveDiagram() {
+      try {
+        var result = await bpmnModeler.saveXML({ format: true });
+        
+        const blob = new Blob([result.xml], { type: 'application/xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'halloween-process.bpmn';
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        console.error('could not save BPMN 2.0 diagram', err);
+      }
+    }
+
+    /**
+     * Load diagram from file
+     */
+    function loadDiagram() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.bpmn,.xml';
+      input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const text = await file.text();
+          await openDiagram(text);
+        }
+      };
+      input.click();
+    }
+
+    /**
+     * Open diagram in our modeler instance.
+     */
+    async function openDiagram(xml) {
+      try {
+        await bpmnModeler.importXML(xml);
+        var canvas = bpmnModeler.get('canvas');
+        canvas.zoom('fit-viewport');
+        
+        // No JavaScript styling - avoid overlays
+      } catch (err) {
+        console.error('could not import BPMN 2.0 diagram', err);
+      }
+    }
+
+
+    // Load initial diagram
+    const initialDiagram = `<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI" 
+                  id="Definitions_1" 
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="HalloweenProcess" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="🎃 Halloween Night Begins">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_1" name="👻 Prepare Costume">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_2" name="🍭 Collect Candy">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_1" name="🦇 Halloween Complete">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_1" targetRef="Task_2" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_2" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="HalloweenProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="154" y="142" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_1_di" bpmnElement="Task_1">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_2_di" bpmnElement="Task_2">
+        <dc:Bounds x="420" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="572" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="548" y="142" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="420" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="520" y="117" />
+        <di:waypoint x="572" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>`;
+
+    // Open initial diagram
+    openDiagram(initialDiagram);
+
+    // Lightweight text styling only - avoid shape manipulation that creates overlays
+    function applyHalloweenToElement(element) {
+      if (!element || !element.type) return;
+      
+      const canvas = bpmnModeler.get('canvas');
+      const gfx = canvas.getGraphics(element);
+      if (!gfx) return;
+
+      // Only style text, avoid shape manipulation
+      const texts = gfx.querySelectorAll('text');
+      texts.forEach(text => {
+        text.setAttribute('fill', 'white');
+        text.style.fill = 'white';
+        text.style.fontWeight = 'bold';
+      });
+    }
+
+    // Listen for new elements
+    bpmnModeler.on('shape.added', function(event) {
+      setTimeout(() => applyHalloweenToElement(event.element), 50);
+    });
+
+    bpmnModeler.on('import.done', function() {
+      const elementRegistry = bpmnModeler.get('elementRegistry');
+      elementRegistry.forEach(element => {
+        setTimeout(() => applyHalloweenToElement(element), 100);
+      });
+    });
+  </script>
+</body>
+</html>
