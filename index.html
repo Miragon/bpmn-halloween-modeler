@@ -134,27 +134,37 @@
       color: white !important;
     }
 
-    /* Halloween colors for BPMN elements - comprehensive CSS-only approach */
+    /* Halloween colors for BPMN elements - comprehensive approach using shape classes */
     
-    /* Start Events */
+    /* Start Events - all circles in start event shapes */
+    .djs-element[data-type="bpmn:StartEvent"] .djs-visual > circle,
+    .djs-element.bpmn-start-event .djs-visual > circle,
+    .djs-element .djs-visual > circle[data-semantic="bpmn:StartEvent"],
     .djs-element[data-element-id*="StartEvent"] .djs-visual > circle,
     .djs-element[data-element-id*="startEvent"] .djs-visual > circle,
     .djs-element[data-element-id^="StartEvent"] .djs-visual > circle {
       fill: #ff6b35 !important;
       stroke: #ff4500 !important;
-      stroke-width: 2px !important;
+      stroke-width: 3px !important;
     }
 
-    /* End Events */
+    /* End Events - all circles in end event shapes */
+    .djs-element[data-type="bpmn:EndEvent"] .djs-visual > circle,
+    .djs-element.bpmn-end-event .djs-visual > circle,
+    .djs-element .djs-visual > circle[data-semantic="bpmn:EndEvent"],
     .djs-element[data-element-id*="EndEvent"] .djs-visual > circle,
     .djs-element[data-element-id*="endEvent"] .djs-visual > circle,
     .djs-element[data-element-id^="EndEvent"] .djs-visual > circle {
       fill: #8b0000 !important;
       stroke: #ff0000 !important;
-      stroke-width: 2px !important;
+      stroke-width: 3px !important;
     }
 
-    /* Tasks */
+    /* Tasks - all rectangles in task shapes */
+    .djs-element[data-type*="Task"] .djs-visual > rect,
+    .djs-element[data-type*="Activity"] .djs-visual > rect,
+    .djs-element.bpmn-task .djs-visual > rect,
+    .djs-element .djs-visual > rect[data-semantic*="Task"],
     .djs-element[data-element-id*="Task"] .djs-visual > rect,
     .djs-element[data-element-id*="task"] .djs-visual > rect,
     .djs-element[data-element-id*="Activity"] .djs-visual > rect,
@@ -163,22 +173,40 @@
     .djs-element[data-element-id^="Activity"] .djs-visual > rect {
       fill: #4b0082 !important;
       stroke: #9400d3 !important;
-      stroke-width: 2px !important;
+      stroke-width: 3px !important;
     }
 
-    /* Gateways */
+    /* Gateways - all polygons in gateway shapes */
+    .djs-element[data-type*="Gateway"] .djs-visual > polygon,
+    .djs-element.bpmn-gateway .djs-visual > polygon,
+    .djs-element .djs-visual > polygon[data-semantic*="Gateway"],
     .djs-element[data-element-id*="Gateway"] .djs-visual > polygon,
     .djs-element[data-element-id*="gateway"] .djs-visual > polygon,
     .djs-element[data-element-id^="Gateway"] .djs-visual > polygon {
       fill: #2f4f2f !important;
       stroke: #228b22 !important;
-      stroke-width: 2px !important;
+      stroke-width: 3px !important;
     }
 
-    /* Generic fallback for any BPMN shape that doesn't match above */
-    .djs-element .djs-visual > rect:not([fill="#ffffff"]) {
+    /* Broad fallback - any circles that aren't styled yet */
+    .djs-element .djs-visual > circle:not([fill="#ff6b35"]):not([fill="#8b0000"]) {
+      fill: #ff6b35 !important;
+      stroke: #ff4500 !important;
+      stroke-width: 3px !important;
+    }
+
+    /* Broad fallback - any rectangles that aren't styled yet */
+    .djs-element .djs-visual > rect:not([fill="#4b0082"]):not([fill="#ffffff"]) {
       fill: #4b0082 !important;
       stroke: #9400d3 !important;
+      stroke-width: 3px !important;
+    }
+
+    /* Broad fallback - any polygons that aren't styled yet */
+    .djs-element .djs-visual > polygon:not([fill="#2f4f2f"]) {
+      fill: #2f4f2f !important;
+      stroke: #228b22 !important;
+      stroke-width: 3px !important;
     }
 
     /* Make text visible */
@@ -191,6 +219,70 @@
     .djs-connection .djs-visual > path {
       stroke: #ff6b35 !important;
       stroke-width: 2px !important;
+    }
+
+    /* Fix drag preview and overlays */
+    .djs-drag-group .djs-visual > circle {
+      fill: #ff6b35 !important;
+      stroke: #ff4500 !important;
+      stroke-width: 3px !important;
+    }
+
+    .djs-drag-group .djs-visual > rect {
+      fill: #4b0082 !important;
+      stroke: #9400d3 !important;
+      stroke-width: 3px !important;
+    }
+
+    .djs-drag-group .djs-visual > polygon {
+      fill: #2f4f2f !important;
+      stroke: #228b22 !important;
+      stroke-width: 3px !important;
+    }
+
+    /* Style drag preview elements */
+    .djs-drag-preview .djs-visual > circle,
+    .djs-preview .djs-visual > circle {
+      fill: #ff6b35 !important;
+      stroke: #ff4500 !important;
+      stroke-width: 3px !important;
+    }
+
+    .djs-drag-preview .djs-visual > rect,
+    .djs-preview .djs-visual > rect {
+      fill: #4b0082 !important;
+      stroke: #9400d3 !important;
+      stroke-width: 3px !important;
+    }
+
+    .djs-drag-preview .djs-visual > polygon,
+    .djs-preview .djs-visual > polygon {
+      fill: #2f4f2f !important;
+      stroke: #228b22 !important;
+      stroke-width: 3px !important;
+    }
+
+    /* Style temporary and overlay elements */
+    .djs-overlay .djs-visual > circle {
+      fill: #ff6b35 !important;
+      stroke: #ff4500 !important;
+    }
+
+    .djs-overlay .djs-visual > rect {
+      fill: #4b0082 !important;
+      stroke: #9400d3 !important;
+    }
+
+    .djs-overlay .djs-visual > polygon {
+      fill: #2f4f2f !important;
+      stroke: #228b22 !important;
+    }
+
+    /* Ensure drag backgrounds are transparent or themed */
+    .djs-drag-group,
+    .djs-drag-preview,
+    .djs-preview {
+      background: transparent !important;
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Griffy:wght@400&display=swap" rel="stylesheet">
@@ -333,7 +425,7 @@
     // Open initial diagram
     openDiagram(initialDiagram);
 
-    // Lightweight text styling only - avoid shape manipulation that creates overlays
+    // Force Halloween styling on new elements
     function applyHalloweenToElement(element) {
       if (!element || !element.type) return;
       
@@ -341,7 +433,17 @@
       const gfx = canvas.getGraphics(element);
       if (!gfx) return;
 
-      // Only style text, avoid shape manipulation
+      // Force CSS re-evaluation by triggering a style recalculation
+      const domElement = gfx.querySelector('.djs-element');
+      if (domElement) {
+        // Force a repaint to ensure CSS is applied
+        domElement.style.opacity = '0.999';
+        setTimeout(() => {
+          domElement.style.opacity = '1';
+        }, 10);
+      }
+
+      // Style text
       const texts = gfx.querySelectorAll('text');
       texts.forEach(text => {
         text.setAttribute('fill', 'white');
@@ -350,9 +452,28 @@
       });
     }
 
-    // Listen for new elements
+    // Enhanced element creation handler
+    function forceStyleRefresh() {
+      // Find all BPMN elements and force style refresh
+      const elements = document.querySelectorAll('.djs-element');
+      elements.forEach(el => {
+        // Trigger style recalculation
+        el.offsetHeight; // Force reflow
+        
+        // Add a class and remove it to force CSS re-evaluation
+        el.classList.add('force-refresh');
+        setTimeout(() => {
+          el.classList.remove('force-refresh');
+        }, 10);
+      });
+    }
+
+    // Listen for new elements with more aggressive styling
     bpmnModeler.on('shape.added', function(event) {
-      setTimeout(() => applyHalloweenToElement(event.element), 50);
+      setTimeout(() => {
+        applyHalloweenToElement(event.element);
+        forceStyleRefresh();
+      }, 100);
     });
 
     bpmnModeler.on('import.done', function() {
@@ -360,6 +481,7 @@
       elementRegistry.forEach(element => {
         setTimeout(() => applyHalloweenToElement(element), 100);
       });
+      setTimeout(forceStyleRefresh, 200);
     });
   </script>
 </body>
